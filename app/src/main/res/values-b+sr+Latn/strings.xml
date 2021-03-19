@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Kalkulator Napojnice</string>
+  <string name="bill">Račun</string>
+  <string name="tip_percentage">Napojnica %</string>
+  <string name="tip">Napojnica:</string>
+  <string name="total">Ukupno:</string>
+</resources>

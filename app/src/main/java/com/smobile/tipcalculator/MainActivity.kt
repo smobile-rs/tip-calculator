@@ -2,6 +2,8 @@ package com.smobile.tipcalculator
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
+import com.smobile.tipcalculator.databinding.ActivityMainBinding
 import java.text.NumberFormat
 import java.util.*
 
@@ -12,27 +14,27 @@ class MainActivity : AppCompatActivity() {
     private const val TIP_DEFAULT_VALUE = 15.0
   }
 
-  //TODO: Uncomment line below after you integrate view binding and add layout tag in activity_main
-  //private lateinit var binding: ActivityMainBinding
+  private lateinit var binding: ActivityMainBinding
+
+  private val updateTipCalculator: (CharSequence?, Int, Int, Int) -> Unit = { _, _, _, _ ->
+    binding.tip = formatWithCurrency(calculateTip())
+    binding.total = formatWithCurrency(calculateTotal())
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    binding = ActivityMainBinding.inflate(layoutInflater)
+    setContentView(binding.root)
 
-    setContentView(R.layout.activity_main)
+    binding.billEditText.doOnTextChanged(updateTipCalculator)
+    binding.tipEditText.doOnTextChanged(updateTipCalculator)
 
     setDefaultBillValue()
     setDefaultTipValue()
   }
 
-  private fun setDefaultBillValue() {
-    //TODO: Uncomment line below after you initialize binding variable
-    //binding.billEditText.setText(BILL_DEFAULT_VALUE.toString())
-  }
-
-  private fun setDefaultTipValue() {
-    //TODO: Uncomment line below after you initialize binding variable
-    //binding.tipEditText.setText(TIP_DEFAULT_VALUE.toString())
-  }
+  private fun setDefaultBillValue() = binding.billEditText.setText(BILL_DEFAULT_VALUE.toString())
+  private fun setDefaultTipValue() = binding.tipEditText.setText(TIP_DEFAULT_VALUE.toString())
 
   private fun calculateTip(): Double {
     return getBill() * getTip() / 100.0
@@ -42,18 +44,8 @@ class MainActivity : AppCompatActivity() {
     return getBill() + calculateTip()
   }
 
-
-  private fun getBill(): Double {
-    //TODO: Uncomment line below and remove line 'return 0.0' after you initialize binding variable
-    //return binding.billEditText.text.extractDoubleValue()
-    return 0.0
-  }
-
-  private fun getTip(): Double {
-    //TODO: Uncomment line below and remove line 'return 0.0' after you initialize binding variable
-    //return binding.tipEditText.text.extractDoubleValue()
-    return 0.0
-  }
+  private fun getBill() = binding.billEditText.text.extractDoubleValue()
+  private fun getTip() = binding.tipEditText.text.extractDoubleValue()
 
   private fun formatWithCurrency(value: Double): String {
     val format = NumberFormat.getCurrencyInstance()
